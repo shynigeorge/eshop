@@ -1,0 +1,378 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>E Store - eCommerce HTML Template</title>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="eCommerce HTML Template Free Download" name="keywords">
+        <meta content="eCommerce HTML Template Free Download" name="description">
+
+
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400|Source+Code+Pro:700,900&display=swap" rel="stylesheet">
+
+        <!-- CSS Libraries -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+        <link href="{% static 'lib/slick/slick.css' %}" rel="stylesheet">
+        <link href="{% static 'lib/slick/slick-theme.css' %}" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    </head>
+
+    <body>
+       
+        
+       
+        
+        
+        
+        <!-- Breadcrumb Start -->
+        <div class="breadcrumb-wrap">
+            <div class="container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item"><a href="#">Products</a></li>
+                    <li class="breadcrumb-item active">Checkout</li>
+                </ul>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+        
+        <!-- Checkout Start -->
+        <div class="checkout">
+            <div class="container-fluid">
+                <form action="{% url 'placeorder' %}" method="post">
+                    {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-7">
+                        <div class="checkout-inner">
+                            <div class="billing-address">
+                                <h2>Billing Address</h2>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>First Name</label>
+                                        <input class="form-control" required value="{{request.user.first_name}}" type="text" placeholder="First Name" name="fname">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Last Name</label>
+                                        <input class="form-control" required value="{{request.user.last_name}}" type="text" placeholder="Last Name" name="lname">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>E-mail</label>
+                                        <input class="form-control" required value="{{request.user.email}}" type="email" placeholder="E-mail" name="email">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Mobile No</label>
+                                        <input class="form-control" required value="{{userprofile.mobileno}}" type="text" placeholder="Mobile No" name="mobileno">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label>Address</label>
+                                        <input class="form-control" required value="{{userprofile.address}}" type="text" placeholder="Address" name="address">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Country</label>
+                                          <input class="form-control" required value="{{userprofile.country}}" type="text" placeholder="Country" name="country">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>City</label>
+                                        <input class="form-control" required value="{{userprofile.city}}" type="text" placeholder="City" name="city">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>State</label>
+                                        <input class="form-control" required value="{{userprofile.state}}" type="text" placeholder="State" name="state">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>ZIP Code</label>
+                                        <input class="form-control" required value="{{userprofile.zipcode}}" type="text" placeholder="ZIP Code" name="zipcode">
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="checkout-inner">
+                            <div class="checkout-summary">
+                                <h1>Order Summery</h1>
+                                <hr>
+                        {% if item %}
+                                <table class="table table-stripeds table-bordereds">
+                                    <thead>
+                                        <tr>
+
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        </tr>
+
+                                     </thead>
+                                    <tbody>
+                                    {% for i in item %}
+
+
+                                        <tr>
+                                            <td>
+                                                <img src="{{i.products.img.url}}" height="50px"  width="50px" >
+                                                {{i.products.name}}
+                                            </td>
+                                             <td>{{i.quantity}}</td>
+                                             <td>{{i.products.price}}</td>
+                                        </tr>
+                                    {% endfor %}
+                                     </tbody>
+                                </table>
+                                <p >Grand Total
+                                    <span >Rs{{totalprice}}</span>
+                                </p>
+                                <input type="hidden" value="COD" name="payment_mode">
+                                <div class="checkout-payment">
+                                    <div class="checkout-btn">
+                                    <button type="submit">Place Order</button><br><br>
+
+                                        <div id="paypal-button-container"></div>
+
+                                    </div>
+                                </div>
+
+                                {% else %}
+                                  <h5>Your cart is empty</h5>
+                        {% endif %}
+
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <!-- Checkout End -->
+        
+        <!-- Footer Start -->
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h2>Get in Touch</h2>
+                            <div class="contact-info">
+                                <p><i class="fa fa-map-marker"></i>123 E Store, Los Angeles, USA</p>
+                                <p><i class="fa fa-envelope"></i>email@example.com</p>
+                                <p><i class="fa fa-phone"></i>+123-456-7890</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h2>Follow Us</h2>
+                            <div class="contact-info">
+                                <div class="social">
+                                    <a href=""><i class="fab fa-twitter"></i></a>
+                                    <a href=""><i class="fab fa-facebook-f"></i></a>
+                                    <a href=""><i class="fab fa-linkedin-in"></i></a>
+                                    <a href=""><i class="fab fa-instagram"></i></a>
+                                    <a href=""><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h2>Company Info</h2>
+                            <ul>
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Terms & Condition</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-widget">
+                            <h2>Purchase Info</h2>
+                            <ul>
+                                <li><a href="#">Pyament Policy</a></li>
+                                <li><a href="#">Shipping Policy</a></li>
+                                <li><a href="#">Return Policy</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row payment align-items-center">
+                    <div class="col-md-6">
+                        <div class="payment-method">
+                            <h2>We Accept:</h2>
+                            <img src="{% static 'img/payment-method.png'%}" alt="Payment Method" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="payment-security">
+                            <h2>Secured By:</h2>
+                            <img src="{% static 'img/godaddy.svg' %}" alt="Payment Security" />
+                            <img src="{% static 'img/norton.svg'%}" alt="Payment Security" />
+                            <img src="{% static 'img/ssl.svg' %}" alt="Payment Security" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+        
+        <!-- Footer Bottom Start -->
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 copyright">
+                        <p>Copyright &copy; <a href="https://htmlcodex.com">HTML Codex</a>. All Rights Reserved</p>
+                    </div>
+
+                    <div class="col-md-6 template-by">
+                        <p>Template By <a href="https://htmlcodex.com">HTML Codex</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer Bottom End -->       
+        
+        <!-- Back to Top -->
+        <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+        
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+        <script src="{% static 'lib/slick/slick.min.js' %}"></script>
+        
+        <!-- Template Javascript -->
+        <script src="{% static 'js/main.js' %}"></script>
+    <script src ="{% static '/js/checkout.js' %}"> </script>
+
+
+    </body>
+</html>
+{% endblock %}
+
+{% block scripts %}
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AbAqk7olxuvsvvuxA55lbjfCJYWi7IBRooqeB7_ysJbPlB5JEKh45vqQOAiEEE6IR33cMSiu4JCgG8RB"></script>
+ <script>
+  paypal.Button.render({
+    // Configure environment
+    env: 'sandbox',
+    client: {
+      sandbox: 'demo_sandbox_client_id',
+      production: 'demo_production_client_id'
+    },
+    // Customize button (optional)
+    locale: 'en_US',
+    style: {
+      size: 'medium',
+      color: 'gold',
+      shape: 'pill',
+    },
+
+    // Enable Pay Now checkout flow (optional)
+    commit: true,
+    onClick: function(data, actions) {
+
+        var fname=$("[name='fname']").val();
+        var lname=$("[name='lname']").val();
+        var email=$("[name='email']").val();
+        var mobileno=$("[name='mobileno']").val();
+        var address=$("[name='address']").val();
+        var country=$("[name='country']").val();
+        var city=$("[name='city']").val();
+        var state=$("[name='state']").val();
+        var zipcode=$("[name='zipcode']").val();
+        var token=$("[name='csrfmiddlewaretoken']").val();
+
+        if(fname == "" || lname == "" || email == "" || mobileno =="" ||  address=="" || country=="" || city=="" || state=="" || zipcode=="" ){
+
+
+             swal("Alert!", "All fields are mandatory", "error");
+             return false;
+         }
+        else{
+             return true;
+         }
+
+
+     },
+
+    // Set up a payment
+    payment: function(data, actions) {
+      return actions.payment.create({
+        transactions: [{
+          amount: {
+            total: '0.01',//'{{totalprice}}',
+            currency: 'USD'
+          }
+        }]
+      });
+    },
+    // Execute the payment
+    onAuthorize: function(data, actions) {
+      return actions.payment.execute().then(function(orderData) {
+                var fname=$("[name='fname']").val();
+                var lname=$("[name='lname']").val();
+                var email=$("[name='email']").val();
+                var mobileno=$("[name='mobileno']").val();
+                var address=$("[name='address']").val();
+                var country=$("[name='country']").val();
+                var city=$("[name='city']").val();
+                var state=$("[name='state']").val();
+                var zipcode=$("[name='zipcode']").val();
+                var token=$("[name='csrfmiddlewaretoken']").val();
+                data={
+                        "fname": fname,
+                        "lname": lname,
+                        "email": email,
+                        "mobileno": mobileno,
+                        "address": address,
+                        "country": country,
+                        "city": city,
+                        "state": state,
+                        "zipcode": zipcode,
+                        "payment_mode":"Paid by Paypal",
+                        "payment_id":orderData.id,
+                        csrfmiddlewaretoken: token
+                    }
+
+                $.ajax({
+                        method:"POST",
+                        url:"/placeorder",
+                        data:data,
+                        success: function (responsec){
+                        swal("Congratulations!", responsec.status, "Success").then((value) => {
+                        window.location.href = '/my-orders'
+                          });
+
+
+                        }
+                    });
+
+
+      });
+    }
+  }, '#paypal-button-container');
+
+</script>
+
+        {% endblock scripts %}
